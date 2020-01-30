@@ -1,0 +1,98 @@
+from chatterbot import ChatBot
+from chatterbot.comparisons import LevenshteinDistance
+from chatterbot.conversation import Statement
+from chatterbot.trainers import ListTrainer
+from chatterbot.trainers import ChatterBotCorpusTrainer
+from chatterbot.logic import LogicAdapter
+from chatterbot.search import IndexedTextSearch
+from chatterbot import utils
+import os
+import sys
+#chatterbot.utils.import_module( dotted_path )
+levenshtein_distance = LevenshteinDistance()
+
+#import nltk
+#nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('averaged_perceptron_tagger')
+#nltk.download('wordnet')
+
+chatbot= ChatBot( "Bob",
+storage_adapter='chatterbot.storage.SQLStorageAdapter',
+    database='./database.sqlite5',  # fichero de la base de datos (si no existe se creará automáticamente)
+    trainer ="chatterbot.trainers.ChatterBotCorpusTrainer",
+    input_adapter='chatterbot.input.TerminalAdapter',
+    output_adapter='chatterbot.output.TerminalAdapter',
+
+read_only=True,
+)
+logic_adapters=[{
+        "import_path": "chatterbot.logic.BestMatch",
+            "statement_comparison_function": "chatterbot.comparisons.levenshtein_distance",
+            "response_selection_method": "chatterbot.response_selection.get_first_response",
+    }]
+
+
+trainer = ChatterBotCorpusTrainer(chatbot)
+chatbott=ListTrainer(chatbot)
+chatbott=ListTrainer(chatbot)
+
+#trainer.train('chatterbot.corpus.spanish')
+#trainer.train("./AI.yml")
+#trainer.train("./psicologia.yml")
+#trainer.train("./dinero.yml")
+#trainer.train("./IA.yml")
+#trainer.train("./emociones.yml")
+#chatbott.set_trainer(ListTrainer)
+
+#chatbott.train([
+    #"como te llamas?!",
+   # "me llamo bob",
+  #  "mi nombre es bob?",
+  #  "y tu?",
+   # "Bien tambien",
+#])
+#chatbott.train([
+   # "Te casarias conmigo?",
+   # "El sistema se ha caido, intente mas tarde",
+   # "rayos",
+   # "te gustaria ser mi amigo?"
+   # "no te preocupes yo trato de entendenrte"
+   #  ])
+usuario = ""
+
+
+
+disparate = Statement('que dices?')
+#print("BoB: Hola en que puedo ayudarte"  )
+variable=0
+while True:
+    if variable==0:
+        print("BoB: Hola, en que puedo ayudarte")
+        variable=+1
+
+    entradaDelUsuarioAnterior = Statement(usuario)
+    usuario = ""
+    #similitud =
+    usuario = input(">>> ")
+    entrada= Statement(usuario)
+    respuesta = chatbot.get_response(usuario)
+
+    chatbot.learn_response(Statement(usuario),entradaDelUsuarioAnterior)
+#    chatterbot.utils.get_response_time(chatbot, declaración='Hola')
+
+
+    # chatterbot.utils.get_response_time(chatbot, declaración='Hola')
+
+
+
+    if levenshtein_distance.compare(entrada, disparate) > 0.71:
+        print('¿Qué debería haber dicho?')
+        correcccion = input(">>>> ")
+        entradaDelUsuarioCorreccion = Statement(correcccion)
+        chatbott.train([entradaDelUsuarioAnterior.text,entradaDelUsuarioCorreccion.text])
+        print("He aprendiendo que cuando digas {} debo responder {}".format(entradaDelUsuarioAnterior.text,
+                                                                         entradaDelUsuarioCorreccion.text))
+
+
+    print("BoB: " + str(respuesta))
