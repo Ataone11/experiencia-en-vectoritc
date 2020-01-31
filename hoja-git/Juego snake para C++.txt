@@ -1,0 +1,749 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <conio.h>
+#include <string.h>
+#include <time.h>
+using namespace std;
+int vel;
+int a=0;
+int lon=3;
+int power=0;
+int longitud=4;
+char o='d';
+int flex=50,fley=10;
+int cuerpo [999][2];
+int rem [999][2];
+int x=0;
+int backcolor=0;
+int colo;
+bool bot=false;
+bool amor=false;
+char mov;
+bool opst=false;
+bool AjustarVentana(int Ancho, int Alto);
+int color[7] = {
+      0x009,
+      0x00E,
+      0x00C,
+      0x002,
+      0x00B,
+      0x005,
+      0x00F
+ 
+     };
+     void setCColor( int color)
+{
+        static HANDLE hConsole;
+ 
+        hConsole = GetStdHandle( STD_OUTPUT_HANDLE );
+ 
+        SetConsoleTextAttribute( hConsole, color | (backcolor * 0x10 + 0x100) );
+}
+void gotoxy(int x,int y){                          ///Inicio funcion (x,y)
+      HANDLE hcon;                                  ///
+      hcon = GetStdHandle(STD_OUTPUT_HANDLE);       ///
+      COORD dwPos;                                  ///
+      dwPos.X = x;                                  ///
+      dwPos.Y= y;                                   ///
+      SetConsoleCursorPosition(hcon,dwPos);         ///
+ }  
+char mapa[200][500] = {
+     "                                                                                            ",
+     "                                                                                              ",
+	 "                                                               AXXXB                            ",  
+     "                                                               Y   Y                        ",
+     "                                                               Y   Y                          ",
+	 "                                                               Y   Y                             ",  
+     "               AXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB     Y   Y        AXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB              ",
+     "               Y                                         Y     Y   Y        Y                                Y                   ",
+     "               DXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXC     Y   Y        DXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXC             ",
+     "                                                               Y   Y                           ",
+     "                                       AXXXXXXXXXXXXXXXXXXXXXXXC   Y                                    ",
+     "                                       Y                           Y                                         ",
+	 "                                       Y    AXXXXXXXXXXXXXXXXXXXXXXC                                           ",           
+	 "              AXXXXXXB                 Y    Y                                        AXXXB                       ",
+	 "              Y      Y                 Y    Y                                        Y   Y                           ",  
+	 "              Y      Y                 DXXXXC                                        DXXXC                          ",       
+	 "              DXXXXXXC                                                 AXB                             AXB             ",
+	 "                                                 AXXXXXXXB             Y Y                             Y Y                    ",
+	 "                                                 Y       Y             Y Y                             Y Y                    ", 
+	 "                                                 DXXXXXXXC             DXC                             Y Y                       ", 
+	 "               AXXXXXXB                                                              AXXXXXB           Y Y            ", 
+	 "               Y      Y                                                              Y     Y           Y Y                  ", 
+	 "               Y      DXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXC     Y           Y Y                  ", 
+	 "               Y                                                                           Y           DXC                   ", 
+	 "               DXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXC                      ", 
+	 "                                                                                             ", 
+	 "                                                                                             ", 
+};      
+void ops(){
+ 	for(int i = 0 ; i < 128 ; i++){
+         for(int j = 0 ; j < 30 ; j++){
+               gotoxy(i,j);
+ 
+               if(mapa[j][i] == 'X') {setCColor(color[0]);printf("%c",205);}
+               else if(mapa[j][i] == 'Y') {setCColor(color[0]);printf("%c",186);}
+               else if(mapa[j][i] == 'A') {setCColor(color[0]);printf("%c",201);}
+               else if(mapa[j][i] == 'B') {setCColor(color[0]);printf("%c",187);}
+               else if(mapa[j][i] == 'C') {setCColor(color[0]);printf("%c",188);}
+               else if(mapa[j][i] == 'D') {setCColor(color[0]);printf("%c",200);}
+ 	
+             }
+              }
+               
+          
+               }
+bool AjustarVentana(int Ancho, int Alto) {
+	_COORD Coordenada;
+	Coordenada.X = Ancho;
+	Coordenada.Y = Alto;
+
+	_SMALL_RECT Rect;
+	Rect.Top = 0;
+	Rect.Left = 0;
+	Rect.Right = Ancho - 1;
+	Rect.Bottom = Alto - 1;
+
+	// Obtener el handle de la consola
+	HANDLE hConsola = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	// Ajustar el buffer al nuevo tamaño
+	SetConsoleScreenBufferSize(hConsola, Coordenada);
+
+	// Cambiar tamaño de consola a lo especificado en el buffer
+	SetConsoleWindowInfo(hConsola, TRUE, &Rect);
+	return TRUE;
+}
+
+void permapa(){
+	
+	for(int i = 0 ; i < 128 ; i++){
+         for(int j = 0 ; j < 30 ; j++){
+               gotoxy(i,j);
+ 
+               if(mapa[j][i] == 'X'&& cuerpo[0][0]==i&&cuerpo[0][1]==j) {gotoxy(118,28);exit(0);}
+                 if(mapa[j][i] == 'Y'&& cuerpo[0][0]==i&&cuerpo[0][1]==j) {gotoxy(118,28);exit(0);}
+                   if(mapa[j][i] == 'A'&& cuerpo[0][0]==i&&cuerpo[0][1]==j) {gotoxy(118,28);exit(0);}
+                     if(mapa[j][i] == 'B'&& cuerpo[0][0]==i&&cuerpo[0][1]==j) {gotoxy(118,28);exit(0);}
+                       if(mapa[j][i] == 'C'&& cuerpo[0][0]==i&&cuerpo[0][1]==j) {gotoxy(118,28);exit(0);}
+                         if(mapa[j][i] == 'D'&& cuerpo[0][0]==i&&cuerpo[0][1]==j) {gotoxy(118,28);exit(0);}}}
+	
+}
+ void menu3(){
+  	
+  		for(int i=8;i<22;i++)
+	{
+		setCColor(color[3]);gotoxy(40,i);printf("%c",186);
+		gotoxy(65,i);printf("%c",186);
+	}
+	for(int x=40;x<65;x++){
+		
+		gotoxy(x,8);printf("%c",205);
+		gotoxy(x,22);printf("%c",205);
+		
+	}
+	    gotoxy(40,8);printf("%c",201);
+		gotoxy(65,8);printf("%c",187);
+		gotoxy(40,22);printf("%c",200);
+		gotoxy(65,22);printf("%c",188);
+  }
+ 
+ void col(){  
+   char opcion;
+ 	fley=12;
+  	        menu3();
+  	            setCColor(color[6]);gotoxy(46,9);cout<<"Elije el Color";
+			    setCColor(color[0]);gotoxy(48,12);cout<<"Azul";
+ 		    	setCColor(color[1]);gotoxy(48,13);cout<<"Amarillo";
+ 		    	setCColor(color[2]);gotoxy(48,14);cout<<"Rojo";
+ 		    	setCColor(color[3]);gotoxy(48,15);cout<<"Verde";
+ 		    	setCColor(color[4]);gotoxy(48,16);cout<<"Celeste";
+ 		    	setCColor(color[5]);gotoxy(48,17);cout<<"Morado";
+ 		    	setCColor(color[6]);gotoxy(48,18);cout<<"Blanco";
+ 		    	setCColor(color[0]);gotoxy(48,19);cout<<"Multicolor";
+ 		    while(opcion!='l'){
+ 		    setCColor(color[6]); gotoxy(45,fley);printf("%c",254);
+ 		    opcion=getch();
+ 		    switch(opcion)
+ 	{
+ 	    	case 'w':
+ 	    		gotoxy(45,fley);cout<<" ";
+ 			     fley--;
+ 			     if(fley<12)
+ 			     {
+ 			     	fley=19;
+				  }
+ 			     
+ 			break;
+ 			
+ 			case 's':
+ 				gotoxy(45,fley);cout<<" ";
+ 			     fley++;
+ 			     if(fley>19){
+ 			     	fley=12;
+ 			     
+				  }
+				  
+ 			break;
+	 }
+}
+
+
+     
+
+switch(fley)
+{
+	case 12:
+	      colo=0;
+	      bot=false;
+		break;
+	case 13:
+	       colo=1; 
+	       bot=false;
+		break;
+	case 14:
+           colo=2;
+		   bot=false;		
+		break;
+	case 15:
+		   colo=3;
+		   bot=false;
+		break;
+	case 16:
+		   colo=4;
+		   bot=false;
+		break;
+	case 17:
+		   colo=5;
+		   bot=false;
+		break;
+	case 18:
+		   colo=6;
+		   bot=false;
+		break;		
+	case 19:
+		   colo=7;
+		   bot=true;
+		break;		
+}
+  } 
+  
+  
+  
+ 
+  void dificultad(){
+  	        char opcion;
+  	        fley=10;
+  	        menu3();
+			gotoxy(flex,fley);cout<<"HARD";
+ 		    gotoxy(flex,15);cout<<"Medium";
+ 		    gotoxy(flex,20);cout<<"EASY";
+ 		    while(opcion!='l'){
+ 		    gotoxy(45,fley);printf("%c",254);
+ 		    opcion=getch();
+ 		    switch(opcion)
+ 	{
+ 	    	case 'w':
+ 	    		gotoxy(45,fley);cout<<" ";
+ 			     fley-=5;
+ 			     if(fley<10)
+ 			     {
+ 			     	fley=20;
+				  }
+ 			     
+ 			break;
+ 			
+ 			case 's':
+ 				gotoxy(45,fley);cout<<" ";
+ 			     fley+=5;
+ 			     if(fley>20){
+ 			     	fley=10;
+ 			     
+				  }
+				  
+ 			break;
+	 }
+}
+
+
+     
+
+switch(fley)
+{
+	case 10:
+	      vel=2;
+		
+	break;
+		case 15:
+	        vel=50;
+		
+	break;
+		case 20:
+		
+		    vel=100;
+	break;
+}
+ 		    
+ 		}
+  
+ void esc(){
+ 	  char opcion;
+ 	fley=10;
+  	        menu3();
+			setCColor(color[0]);gotoxy(48,fley);cout<<"readudar juego";
+ 		    gotoxy(47,13);cout<<"puntuacion maxima";
+ 		    gotoxy(46,16);cout<<"cambiar dificultad";
+ 		    gotoxy(48,19);cout<<"menu principal";
+ 		    while(opcion!='l'){
+ 		    setCColor(color[6]); gotoxy(45,fley);printf("%c",254);
+ 		    opcion=getch();
+ 		    switch(opcion)
+ 	{
+ 	    	case 'w':
+ 	    		gotoxy(45,fley);cout<<" ";
+ 			     fley-=3;
+ 			     if(fley<10)
+ 			     {
+ 			     	fley=20;
+				  }
+ 			     
+ 			break;
+ 			
+ 			case 's':
+ 				gotoxy(45,fley);cout<<" ";
+ 			     fley+=3;
+ 			     if(fley>19){
+ 			     	fley=10;
+ 			     
+				  }
+				  
+ 			break;
+	 }
+}
+
+
+     
+
+switch(fley)
+{
+	case 10:
+	      
+		o=mov;
+	break;
+		case 13:
+	        
+		
+	break;
+		case 16:
+		system("cls");
+		   
+	
+	dificultad();
+
+	break;
+	case 19:
+		 o='o';
+		break;
+}
+ }
+ 
+ 
+ 		    
+  
+ void entorno(){
+ 		for(int i=3;i<=9;i++)
+	{
+		 gotoxy(38,i);printf("%c",186);
+		gotoxy(75,i);printf("%c",186);
+	}
+	for(int x=38;x<=75;x++){
+		
+		gotoxy(x,3);printf("%c",254);
+		gotoxy(x,9);printf("%c",254);
+		
+	}
+	   
+ }
+ 
+ 
+ void f (){
+ 		
+	for(int i=1;i<28;i++)
+	{
+	    setCColor(color[0]);gotoxy(1,i);printf("%c",186);
+		gotoxy(118,i);printf("%c",186);
+	}
+	for(int x=1;x<118;x++){
+		
+		gotoxy(x,1);printf("%c",205);
+		gotoxy(x,28);printf("%c",205);
+		
+	}
+	    gotoxy(1,1);printf("%c",201);
+		gotoxy(118,1);printf("%c",187);
+		gotoxy(1,28);printf("%c",200);
+	    gotoxy(118,28);printf("%c",188);
+ }             
+ 
+ void menu(){
+ 	char opcion;
+ 	char men;
+ 	bool en=false,end=false;
+ 	fley=10;
+ 	
+ 	    while(opcion!='l'){
+ 	    		system("cls");
+ 	    		
+ 	    		
+ 	    		f();
+		        entorno();
+ 	    	 setCColor(color[1]);gotoxy(42,4);cout<<"+++++  +++++ ++++   ++++  +++++";
+ 	    	 setCColor(color[1]);gotoxy(42,5);cout<<"++     +   + ++++   ++++  ++";
+ 	    	 setCColor(color[1]);gotoxy(42,6);cout<<"+++++  +++++ ++  +++  ++  ++++";
+ 	    	 setCColor(color[1]);gotoxy(42,7);cout<<"++  +  +   + ++       ++  ++";
+ 	    	 setCColor(color[1]);gotoxy(42,8);cout<<"+++++  +   + ++       ++  +++++ ";
+ 	    
+ 		gotoxy(flex,10);cout<<"Iniciar Juego";
+ 		gotoxy(flex,15);cout<<"Modo de Juego";
+ 		gotoxy(flex,20);cout<<"Salir";
+ 		//sndPlaySound("C:\\Users\\UsuarIO\\Downloads\\can.wav",0);
+ 		
+
+ 	while(opcion!='l'){
+	 
+	 	gotoxy(45,fley);printf("%c",254);
+ 	opcion=getch();
+ 	
+ 	switch(opcion)
+ 	{
+ 	    	case 'w':
+ 	    		gotoxy(45,fley);cout<<" ";
+ 			     fley-=5;
+ 			     if(fley<10)
+ 			     {
+ 			     	fley=20;
+				  }
+ 			     
+ 			break;
+ 			
+ 			case 's':
+ 				gotoxy(45,fley);cout<<" ";
+ 			     fley+=5;
+ 			     if(fley>20){
+ 			     	fley=10;
+ 			     
+				  }
+				  
+ 			break;
+ 			
+	 }
+
+
+     
+}
+switch(fley)
+{
+	case 10:
+		system("cls");
+		opcion='q';
+		    dificultad();
+		en=true;
+		
+		
+	break;
+		case 15:
+		opst=true;
+			opcion='q';
+		
+	break;
+		case 20:
+			system("cls");
+		exit(0);
+		
+	break;
+}
+if(en==true)
+ break;
+ }
+}
+
+
+
+   main(){
+		AjustarVentana(120,30);     // Para pantalla de resolución 1360*760
+	// AjustarVentana(150,50);  // Para otras de menor resolución
+
+		bool end=false;
+		
+	while(end!=true){
+
+	
+	for(int i=3;i<=999;i++)
+	{
+	 cuerpo[i][0]=0;
+	  cuerpo[i][1]=0;
+	   rem[i][0]=0;
+	    rem[i][1]=0;
+	}
+int a=0;
+int lon=3;
+int power=0;
+int longitud=4;
+ menu();
+ system("cls");
+ if(opst==true)
+        {ops();}
+ col();
+ 
+ 	
+ float y=18,x=5;
+   
+    cuerpo[0][0]=x;
+    cuerpo[0][1]=y;
+    cuerpo[1][0]=x-1;
+    cuerpo[1][1]=y;
+    cuerpo[2][0]=x-2;
+    cuerpo[2][1]=y;
+
+
+o='d';
+
+
+
+
+ 	system("cls");
+ 	 if(opst==true)
+        {ops();}
+ 
+ int num = rand();
+ int nums = rand();
+ nums=(rand()%113)+4;
+		num=(rand()%23)+4;
+
+f();
+
+while(o!='o')
+{
+	if(opst==true)
+        {
+	permapa();}
+	if(o=='t')amor=false;
+	if(o=='y')
+	{amor=true;
+	int d=30;
+	f();
+	
+	setCColor(color[colo]);gotoxy(1,30);cout<<"TTTTTTTTTTTTTTTTTTTTTTTTTTT     EEEEEEEEEEEEEEEEEEEEE      AAAAAAAAAAAAAAAAAAAA      MMMMMMMMMMMMMM         MMMMMMMMMMMMMMM   OOOOOOOOOOOOOOOOOOOO";Sleep(50);	AjustarVentana(150,32);  
+	setCColor(color[colo]);gotoxy(1,31);cout<<"TTTTTTTTTTTTTTTTTTTTTTTTTTT     EEEEEEEEEEEEEEEEEEEEE      AAAAAAAAAAAAAAAAAAAA      MMMMMMMMMMMMMMM       MMMMMMMMMMMMMMMM   OOOOOOOOOOOOOOOOOOOO";Sleep(60);	AjustarVentana(150,33);  
+	setCColor(color[colo]);gotoxy(1,32);cout<<"TTTTTTTTTTTTTTTTTTTTTTTTTTT     EEEEEEEEEEEEEEEEEEEEE      AAAAAAAAAAAAAAAAAAAA      MMMMMMMMMMMMMMMM     MMMMMMMMMMMMMMMMM   OOOOOOOOOOOOOOOOOOOO";Sleep(70);	AjustarVentana(150,34);  
+	setCColor(color[colo]);gotoxy(1,33);cout<<"TTTTTTTTTTTTTTTTTTTTTTTTTTT     EEEEEEEEEEEEEEEEEEEEE      AAAAAAA      AAAAAAA      MMMMMMMMMMMMMMMMM   MMMMMMMMMMMMMMMMMM   OOOOOOOO    OOOOOOOO";Sleep(80);	AjustarVentana(150,35);  
+	setCColor(color[colo]);gotoxy(1,34);cout<<"         TTTTTTTTT              EEEEEEEEE                  AAAAAAA      AAAAAAA      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM   OOOOOOOO    OOOOOOOO";Sleep(90);	AjustarVentana(150,36);  
+	setCColor(color[colo]);gotoxy(1,35);cout<<"         TTTTTTTTT              EEEEEEEEE                  AAAAAAA      AAAAAAA      MMMMMMMMMM    MMMMMMMMM   MMMMMMMMMMMM   OOOOOOOO    OOOOOOOO";Sleep(100);	AjustarVentana(150,37);  
+	setCColor(color[colo]);gotoxy(1,36);cout<<"         TTTTTTTTT              EEEEEEEEEEEEEEEEE          AAAAAAAAAAAAAAAAAAAA      MMMMMMMMMM      MMMMM     MMMMMMMMMMMM   OOOOOOOO    OOOOOOOO";Sleep(110);	AjustarVentana(150,38);  
+	setCColor(color[colo]);gotoxy(1,37);cout<<"         TTTTTTTTT              EEEEEEEEEEEEEEEEE          AAAAAAAAAAAAAAAAAAAA      MMMMMMMMMM                MMMMMMMMMMMM   OOOOOOOO    OOOOOOOO";Sleep(120);	AjustarVentana(150,39);  
+	setCColor(color[colo]);gotoxy(1,38);cout<<"         TTTTTTTTT              EEEEEEEEEEEEEEEEE          AAAAAAAAAAAAAAAAAAAA      MMMMMMMMMM                MMMMMMMMMMMM   OOOOOOOO    OOOOOOOO";Sleep(130);	AjustarVentana(150,40);  
+	setCColor(color[colo]);gotoxy(1,39);cout<<"         TTTTTTTTT              EEEEEEEEE                  AAAAAAA      AAAAAAA      MMMMMMMMMM                MMMMMMMMMMMM   OOOOOOOO    OOOOOOOO";Sleep(140);	AjustarVentana(150,41);  
+	setCColor(color[colo]);gotoxy(1,40);cout<<"         TTTTTTTTT              EEEEEEEEE                  AAAAAAA      AAAAAAA      MMMMMMMMMM                MMMMMMMMMMMM   OOOOOOOO    OOOOOOOO";Sleep(150);	AjustarVentana(150,42);  
+	setCColor(color[colo]);gotoxy(1,41);cout<<"         TTTTTTTTT              EEEEEEEEEEEEEEEEEEEEE      AAAAAAA      AAAAAAA      MMMMMMMMMM                MMMMMMMMMMMM   OOOOOOOOOOOOOOOOOOOO";Sleep(160);	AjustarVentana(150,43);  
+	setCColor(color[colo]);gotoxy(1,42);cout<<"         TTTTTTTTT              EEEEEEEEEEEEEEEEEEEEE      AAAAAAA      AAAAAAA      MMMMMMMMMM                MMMMMMMMMMMM   OOOOOOOOOOOOOOOOOOOO";Sleep(170);	AjustarVentana(150,44);  
+	setCColor(color[colo]);gotoxy(1,43);cout<<"         TTTTTTTTT              EEEEEEEEEEEEEEEEEEEEE      AAAAAAA      AAAAAAA      MMMMMMMMMM                MMMMMMMMMMMM   OOOOOOOOOOOOOOOOOOOO";Sleep(180);	AjustarVentana(150,45);  
+	
+	setCColor(color[0]);gotoxy(1,30);cout<<"                                                                                                                                                           ";Sleep(50);	
+	setCColor(color[1]);gotoxy(1,31);cout<<"                                                                                                                                                           ";Sleep(60);	
+	setCColor(color[2]);gotoxy(1,32);cout<<"                                                                                                                                                           ";Sleep(70);	
+	setCColor(color[3]);gotoxy(1,33);cout<<"                                                                                                                                                           ";Sleep(80);	
+	setCColor(color[4]);gotoxy(1,34);cout<<"                                                                                                                                                           ";Sleep(90);	
+	setCColor(color[5]);gotoxy(1,35);cout<<"                                                                                                                                                           ";Sleep(100);	
+	setCColor(color[6]);gotoxy(1,36);cout<<"                                                                                                                                                           ";Sleep(110);	
+	setCColor(color[0]);gotoxy(1,37);cout<<"                                                                                                                                                           ";Sleep(120);	
+	setCColor(color[1]);gotoxy(1,38);cout<<"                                                                                                                                                           ";Sleep(130);	
+	setCColor(color[2]);gotoxy(1,39);cout<<"                                                                                                                                                           ";Sleep(140);	
+	setCColor(color[3]);gotoxy(1,40);cout<<"                                                                                                                                                           ";Sleep(150);	
+	setCColor(color[4]);gotoxy(1,41);cout<<"                                                                                                                                                           ";Sleep(160);	
+	setCColor(color[5]);gotoxy(1,42);cout<<"                                                                                                                                                           ";Sleep(170);	
+	setCColor(color[6]);gotoxy(1,43);cout<<"                                                                                                                                                           ";Sleep(180);	
+	
+colo++;
+
+       
+	 }
+	 
+	
+               
+	 
+		if(x<2)
+	{x=117;
+	f();}
+	if(x>117)
+	{
+	o='d';
+	
+	x=1;
+	f();}
+		if(y==28)
+	{
+	
+	 y=2;
+	
+	 f();}
+	 if(y==1)
+	{
+	o='w';
+	
+	y=28;
+	f();}
+	
+	int z=0;
+    for(int j=0;j<lon;j++)
+	{
+		    if(colo==7)colo=0;
+			 setCColor(color[colo]);gotoxy(cuerpo[j][0],cuerpo[j][1]);printf("%c",254);
+			rem[j][0]=cuerpo[j][0];
+			rem[j][1]=cuerpo[j][1];
+			if(bot==true)colo++;
+			
+	}
+
+	if(nums==x&num==y)
+	{
+		
+		 power+=10;
+	    cuerpo[lon][0]=rem[lon-1][0];
+	    cuerpo[lon][1]=rem[lon-1][1];
+	    	lon++;
+	     cuerpo[lon][0]=rem[lon-1][0];
+	    cuerpo[lon][1]=rem[lon-1][1];
+	    	lon++;
+	     cuerpo[lon][0]=rem[lon-1][0];
+	    cuerpo[lon][1]=rem[lon-1][1];
+	    
+		
+		nums=(rand()%113)+4;
+		num=(rand()%23)+4;
+	    for(int i=0;i<=lon;i++){
+	    	if(nums==cuerpo[i][0]&num==cuerpo[i][1]){
+	    		gotoxy(nums,num);cout<<" ";
+	    		nums=(rand()%113)+4;
+		        num=(rand()%23)+4;
+			}
+		}
+	
+		
+		lon++;
+		f();
+		//ops();
+	}
+	
+        if((nums%2)==0){
+            
+			nums+=1;
+		   }
+    	//i=0;
+    	 
+    	//system("cls");
+    	
+    	
+    	 setCColor(color[6]);gotoxy(5,0.5);cout<<"puntos:"<<power;
+	    gotoxy(nums,num);printf("%c",254);
+	    
+	
+	for(int j=lon-1;j<999;j++)
+	{
+			gotoxy(cuerpo[j][0],cuerpo[j][1]);cout<<" ";
+			
+		
+	}
+   if(amor==false){
+   if(kbhit()){
+   	mov=o;
+   o = getch(); 
+   
+     
+   }
+   
+   //PlaySound ("C:\\Users\\UsuarIO\\Downloads\\can.wav", NULL, SND_FILENAME); 
+	switch(o)
+	{
+		case 'w':
+			if(mov!='s'){
+			y--;}
+			else{
+				o='s';
+				y++;
+			}
+		
+			break;
+			case'a':
+			if(mov!='d'){
+			    x-=2;}
+			    else{
+			    	x+=2;
+			    	o='d';
+				}
+				
+				break;
+				case's':
+				if(mov!='w'){
+				      y++;}
+				      else{
+				      	y--;
+				      	o='w';
+					  }
+				
+					break;
+					case'd':
+					    if(mov!='a'){
+						x+=2;}
+					else{
+						x-=2;
+						o='a';
+					}
+						break;
+						default:
+							
+						x+=2;
+						y++;
+					
+						
+						break;
+	}
+	}
+	
+	cuerpo[0][0]=x;
+    cuerpo[0][1]=y;
+    
+	for(int j=1;j<=lon;j++){
+	cuerpo[j][0]=rem[j-1][0];
+	cuerpo[j][1]=rem[j-1][1];
+}
+for(int i=1;i<=lon;i++)
+{
+	if(cuerpo[0][0]==cuerpo[i][0]&cuerpo[0][1]==cuerpo[i][1])
+	{
+		cout<<"perdiste";
+		exit(0);
+		
+		
+	}
+}
+	/*	cuerpo[1][1]=rem[0][1];
+		cuerpo[2][0]=rem[1][0];
+		cuerpo[2][1]=rem[1][1];*/
+		if(o=='p')
+	{
+		system("cls");
+		esc();
+		system("cls");
+		f();
+		
+		
+	}
+	Sleep(vel);	
+}
+
+
+}
+}
+

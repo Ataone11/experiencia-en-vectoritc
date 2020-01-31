@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script> 
+    function sumar (){
+      var valor='<%= data.Cantidad%>' ;
+      var valor2 =document.getElementById("Cantidad").value;
+      alert(valor2);
+      var formulario = document.getElementById("formu");
+      formulario.action="/update/<%= data.id_producto%>&"+(valor - valor2) ;
+      alert(valor- valor2);
+      formulario.submit();
+    }
+      </script>
+     <meta charset="utf-8">
+     <title>FORMULARIO</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+   </head>
+   <body>
+
+     <nav class="navbar navbar-dark bg-dark">
+       <a href="#" class="navbar-brand mx-auto">Venedor</a>
+       <form action="/inicio" method="POST">
+        <button type="submit" class="btn btn-primary">Volver</button>
+      </form>
+     
+      
+     </nav>
+
+    <div class="container"align="center">
+     
+       
+
+      <div class="col-md-4 mt-4 card" align="center">
+        <form id="formu" method="post" class="card-body">
+          <h3 class="card.title">Venta</h3>
+          
+          <div class="form-group">
+            <div class="form-group">
+           Codigo: <input type="text" name="Producto" value="<%= data.Codigo%>" class="form-control"placeholder="producto" disabled>
+          </div>
+          <div class="form-group">
+           Producto: <input type="text" name="Producto" value="<%= data.Producto%>" class="form-control"placeholder="producto" disabled>
+            </div>
+            <div class="form-group">
+            Tipo:<input type="text" name="Tipo" value="<%= data.Tipo%>" class="form-control"placeholder="tipo" disabled>
+          </div>
+            <div class="form-group">
+           Cantidad: <input type="text" id="Cantidad" name="Cantidad"   class="form-control"placeholder="cantidad a vender" align="center">
+            </div>
+           Valor: <input type="text" name="Valor"  value="<%= data.Valor%>" class="form-control"placeholder="valor" disabled>
+          </div>
+        
+         <div class="form-group">
+          <input type="button" value="Vender" onclick="javascript:sumar()" class="btn btn-primary">
+        </div>
+        </form>
+      </div>
+    </div>
+    </div>
+   </body>
+</html>
